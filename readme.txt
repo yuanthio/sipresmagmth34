@@ -1,178 +1,102 @@
-<?php
-// Mulai sesi PHP
-session_start();
+# 📍 SIPRESMAGMTH34 — Internship Attendance System
 
-// Termasuk file konfigurasi database
-include '../../config/database.php';
+[![PHP](https://img.shields.io/badge/PHP-%23777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-%23323330?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Face API](https://img.shields.io/badge/Face_API_js-%23ff69b4?style=for-the-badge)](https://github.com/justadudewhohacks/face-api.js)
+[![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
 
-// Mengambil parameter dari URL
-$id_mahasiswa = $_GET["id_mahasiswa"];
-$tanggal_awal = $_GET["tanggal_awal"];
-$tanggal_akhir = $_GET["tanggal_akhir"];
+**SIPRESMAGMTH34** is a web-based **attendance system** for interns at **Badan Pemeriksa Keuangan (BPK) Perwakilan DKI Jakarta** featuring **face recognition**, **location-based attendance**, and **multi-role access control**.
 
-// Menetapkan header untuk tipe konten PDF
-header('Content-Type: application/pdf');
+🌍 **Live Demo:** https://sipresmagmth34.com/  
+🔗 **Repo:** https://github.com/yuanthio/sipresmagmth34
 
-// Menetapkan header untuk menampilkan PDF di browser dan memberi nama file
-header('Content-Disposition: inline; filename="' . $namafile . '"');
+---
 
-// Memasukkan library FPDF
-require('../../source/plugin/fpdf/fpdf.php');
+## ✨ Key Features
 
-// Membuat objek PDF dengan ukuran halaman Letter
-$pdf = new FPDF('P', 'mm', 'Letter');
+- **Face Recognition Attendance**  
+  Intern attendance verification using real-time face detection with **Face API.js**.
 
-// Termasuk file konfigurasi lainnya
-include '../../config/database.php';
-include '../../config/function.php';
+- **Geo-Location Attendance Validation**  
+  Attendance submissions validated using **Leaflet.js**-based GPS coordinates and radius restrictions.
 
-// Mengambil informasi instansi dari database
-$query = mysqli_query($kon, "select * from tbl_site limit 1");
-$row = mysqli_fetch_array($query);
-$pembimbing = $row['pembimbing'];
+- **Multiple User Roles**  
+  - 👨‍💼 **Administrator** — Full control over users, schedules, and records.  
+  - 👨‍🎓 **Intern** — Attendance check-in/out using face & location.  
+  - 👨‍🏫 **Mentor** — Monitor intern attendance and activities.
 
-// Menambahkan halaman ke PDF
-$pdf->AddPage();
+- **Responsive UI**  
+  Built with HTML, CSS, Bootstrap, and JavaScript for accessible use across devices.
 
-// Menambahkan logo instansi
-$pdf->Image('../../apps/pengaturan/logo/' . $row['logo'], 15, 5, 20, 20);
+- **Database Driven**  
+  MySQL used to store user, attendance, and configuration data.
 
-// Menetapkan font dan judul instansi
-$pdf->SetFont('Arial', 'B', 18);
-$pdf->Cell(0, 7, strtoupper($row['nama_instansi']), 0, 1, 'C');
+---
 
-// Menetapkan alamat instansi dan informasi kontak
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(0, 7, $row['alamat'] . ', Telp ' . $row['no_telp'], 0, 1, 'C');
-$pdf->Cell(0, 7, $row['website'], 0, 1, 'C');
+## 🛠️ Tech Stack
 
-// Menggambar garis di bawah informasi instansi
-$pdf->SetLineWidth(1);
-$pdf->Line(10, 31, 206, 31);
-$pdf->SetLineWidth(0);
-$pdf->Line(10, 32, 206, 32);
+- **Frontend:**  
+  HTML, CSS, Bootstrap, JavaScript, jQuery, Face API.js, Leaflet.js  
+- **Backend:**  
+  Native PHP  
+- **Database:**  
+  MySQL  
+- **Deployment:**  
+  Hosted on custom domain (via service)
 
-// Mengambil informasi mahasiswa
-$sql = "select * from tbl_mahasiswa where id_mahasiswa = $id_mahasiswa";
-$hasil = mysqli_query($kon, $sql);
-$data = mysqli_fetch_array($hasil);
+---
 
-// Mengambil informasi awal dan akhir magang
-$awal_magang = $data['mulai_magang'];
-$akhir_magang = $data['akhir_magang'];
-$mulai_bulan = date("m", strtotime($awal_magang));
-$akhir_bulan = date("m", strtotime($akhir_magang));
-$mulai_hari = date("d", strtotime($awal_magang));
-$akhir_hari = date("d", strtotime($akhir_magang));
-$akhir_tahun = date("Y", strtotime($akhir_magang));
+## 📂 Project Structure
 
-// Menampilkan judul dan informasi mahasiswa
-$pdf->SetFont('Arial', 'B', 14);
-$pdf->Cell(0, 5, '', 0, 1, 'C');
-$pdf->Cell(0, 7, 'DAFTAR HADIR KARYAWAN MAGANG', 0, 1, 'C');
-$pdf->Cell(0, 7, 'PERIODE MAGANG ' . $mulai_hari . ' ' . MendapatkanAwalBulan($mulai_bulan) . ' - ' . $akhir_hari . ' ' . MendapatkanAkhirBulan($akhir_bulan) . ' ' . $akhir_tahun, 0, 1, 'C');
-$pdf->Cell(0, 5, '', 0, 1, 'C');
-$pdf->Cell(0, 5, '', 0, 1, 'C');
+    ```text
+    sipresmagmth34/
+    ├── apps/                   # Custom application modules (e.g., pengaturan assets)
+    │   └── pengaturan/
+    │       └── logo/           # Logo & image assets
+    ├── config/                 # Configuration files
+    │   └── database.php        # Database connection config
+    ├── database/               # Database migrations / seeds (if any)
+    ├── models/                 # PHP models for business logic
+    ├── source/                 # Supporting libraries and plugins
+    │   └── plugin/
+    │       └── fpdf/           # Library to generate PDF reports
+    ├── template/               # HTML/PHP templates & UI layout
+    ├── index.php               # Main landing page
+    ├── login.php               # Login page
+    ├── logout.php              # Logout script
+    ├── cek_rating.php          # Rating/validation utilities
+    ├── simpan_rating.php       # Rating persistence scripts
+    └── readme.txt              # Legacy readme & notes
 
-$pdf->SetFont('Arial', '', 10);
-$pdf->Cell(35, 6, 'Nama', 0, 0);
-$pdf->Cell(31, 6, ': ' . $data['nama'], 0, 1);
-$pdf->Cell(35, 6, 'NIM / NIS', 0, 0);
-$pdf->Cell(31, 6, ': ' . $data['nim'], 0, 1);
-$pdf->Cell(35, 6, 'Universitas / Sekolah', 0, 0);
-$pdf->Cell(31, 6, ': ' . $data['universitas'], 0, 1);
-$pdf->Cell(35, 6, 'Jurusan', 0, 0);
-$pdf->Cell(31, 6, ': ' . $data['jurusan'], 0, 1);
+## Getting Started
+1. Clone the Repository
+   ```bash
+   git clone https://github.com/yuanthio/sipresmagmth34.git
+   cd sipresmagmth34
+2. Install / Setup Environment
+   Copy .env.example or update database config in /config/database.php.
+   Example config/database.php setup:
+   ```bash
+   <?php
+   // Database Connection
+   $host = "localhost";
+   $user = "root";
+   $pass = "your_password";
+   $db   = "sipresmagmth34_db";
+    
+   $kon = mysqli_connect($host, $user, $pass, $db) or die("Connection Failed");
+   ?>
+3. Setup Database
+   - Create a database in MySQL (e.g., sipresmagmth34_db).
+   - Import provided SQL file (if available) or run schema scripts via phpMyAdmin / CLI.
+4. Start Using (Frontend)
+   - Place project in your local web server root (e.g., htdocs, www).
+   - Open in browser: http://localhost/sipresmagmth34/
 
-// Mengatur spasi antara info mahasiswa dan daftar hadir
-$pdf->Cell(10, 3, '', 0, 1);
-
-// Menampilkan tabel daftar hadir
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(10, 6, 'No', 1, 0, 'C');
-$pdf->Cell(15, 6, 'Hari', 1, 0, 'C');
-$pdf->Cell(33, 6, 'Tanggal', 1, 0, 'C');
-$pdf->Cell(15, 6, 'Waktu', 1, 0, 'C');
-$pdf->Cell(15, 6, 'Status', 1, 0, 'C');
-$pdf->Cell(46, 6, 'Keterangan Izin', 1, 0, 'C');
-// Tentukan lebar dinamis untuk kolom "Kegiatan"
-$lebarKegiatan = 62; // Atur lebar awal untuk kolom "Kegiatan"
-$pdf->Cell($lebarKegiatan, 6, 'Kegiatan', 1, 1, 'C');
-
-$pdf->SetFont('Arial', '', 10);
-
-$no = 0;
-
-// Mengambil data absensi mahasiswa
-$sql = "SELECT tbl_absensi.id_absensi, tbl_absensi.id_mahasiswa, tbl_absensi.status, tbl_absensi.tanggal, tbl_absensi.waktu,
-    DATE_FORMAT(tbl_absensi.tanggal, '%W') AS hari 
-    FROM tbl_absensi WHERE tbl_absensi.id_mahasiswa = $id_mahasiswa AND 
-    tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
-    ORDER BY tanggal ASC";
-$hasil = mysqli_query($kon, $sql);
-
-while ($data = mysqli_fetch_assoc($hasil)) {
-    $waktu = date("h:i", strtotime($data['waktu']));
-    $status = $data['status'];
-    $hari = $data['hari'];
-    $tgl = date("d", strtotime($data['tanggal']));
-    $bulan = date("m", strtotime($data['tanggal']));
-    $tahun = date("Y", strtotime($data['tanggal']));
-
-    // Menambahkan kegiatan pada tanggal yang sama
-    $kegiatanSql = "SELECT GROUP_CONCAT(kegiatan SEPARATOR ', ') AS kegiatan FROM tbl_kegiatan WHERE id_mahasiswa = $id_mahasiswa AND tanggal = '" . $data['tanggal'] . "'";
-    $kegiatanResult = mysqli_query($kon, $kegiatanSql);
-    $kegiatanData = mysqli_fetch_assoc($kegiatanResult);
-    $kegiatan = $kegiatanData['kegiatan'];
-
-    if ($kegiatan == null || $kegiatan == "") {
-        $kegiatan = "-"; // Setel kegiatan menjadi "-" jika tidak ada data kegiatan
-    }
-
-    // Batasi panjang maksimal keterangan izin menjadi 50 karakter
-    $keteranganIzin = ($status == 'Hadir' || $status == 'Tidak Hadir') ? '-' : substr(GetKeteranganIzin($data['tanggal'], $id_mahasiswa), 0, 50);
-
-    $no++;
-
-    // Hitung tinggi teks kegiatan (Kolom "Kegiatan")
-    $tinggi_kegiatan = $pdf->GetStringWidth($kegiatan) > $lebarKegiatan ? ceil($pdf->GetStringWidth($kegiatan) / $lebarKegiatan) * 6 : 6;
-
-    $pdf->Cell(10, $tinggi_kegiatan, $no, 1, 0, 'C');
-    $pdf->Cell(15, $tinggi_kegiatan, MendapatkanHari($hari), 1, 0, 'C');
-    $pdf->Cell(33, $tinggi_kegiatan, $tgl . ' ' . MendapatkanBulan($bulan) . ' ' . $tahun, 1, 0, 'C');
-    $pdf->Cell(15, $tinggi_kegiatan, $waktu, 1, 0, 'C');
-    $pdf->Cell(15, $tinggi_kegiatan, StatusAbsensi($status), 1, 0, 'C');
-
-    // Menambahkan kolom "Keterangan Izin"
-    $pdf->Cell(46, $tinggi_kegiatan, $keteranganIzin, 1, 0, 'C'); // Tambah kolom "Keterangan Izin"
-
-    // Menggunakan MultiCell untuk kolom "Kegiatan"
-    $pdf->MultiCell($lebarKegiatan, 6, $kegiatan, 1, 'C');
-}
-
-// Informasi penandatangan
-$tanggal = date('Y-m-d');
-
-// Mengambil informasi mentor
-$sqlMentor = "SELECT mentor FROM tbl_mahasiswa WHERE id_mahasiswa = $id_mahasiswa";
-$hasilMentor = mysqli_query($kon, $sqlMentor);
-$dataMentor = mysqli_fetch_array($hasilMentor);
-$mentor = $dataMentor['mentor'];
-
-$pdf->SetFont('Arial', '', 10);
-$pdf->Cell(340, 15, '', 0, 1, 'C');
-$pdf->Cell(340, 12, '', 0, 1, 'C');
-$pdf->Cell(340, 0, 'Pembimbing Magang', 0, 1, 'C');
-$pdf->Cell(340, 50, $mentor, 0, 1, 'C');
-
-$kueri = "select nama from tbl_mahasiswa where id_mahasiswa = $id_mahasiswa";
-$hasilsql = mysqli_query($kon, $kueri);
-$hasilnama = mysqli_fetch_array($hasilsql);
-$nama = $hasilnama['nama'];
-
-$namafile = 'Absensi-' . $nama . '-' . date('YmdHis') . '.pdf';
-
-// Menyimpan PDF ke file dan menampilkannya
-$pdf->Output('files/' . $namafile, 'F');
-readfile('files/' . $namafile);
-?>
+## Project Goals
+This project demonstrates:
+- Integration of AI-based face recognition in a web app.
+- Geo-fencing attendance validation with Leaflet.js.
+- Classic PHP + MySQL stack with modular folder organization.
+- Multi-role access control with user-friendly UI & UX.
