@@ -43,7 +43,7 @@
 - **Database:**  
   MySQL  
 - **Deployment:**  
-  Hosted on custom domain (via service)
+  Niagahoster
 
 ---
 
